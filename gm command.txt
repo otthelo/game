@@ -1,0 +1,67 @@
+Daftar Perintah GM (Chat In-Game)
+
+Ketik perintah di chat dengan awalan @ atau /:
+
+Level 1 — GM / Moderator
+@help                          Tampilkan semua perintah
+@warp <x> <y>                  Teleport ke koordinat (contoh: @warp 400 300)
+@goto <nama_pemain>            Teleport ke posisi pemain
+@recall <nama_pemain>          Panggil pemain ke posisi Anda
+@mute <nama> [menit]           Mute chat pemain (default 5 menit, max 1440)
+@unmute <nama>                 Cabut mute pemain
+@kick <nama> [alasan]          Kick pemain dari server
+@broadcast <pesan>             Kirim pengumuman global (muncul emas 📢)
+@who                           Tampilkan daftar pemain online + koordinat
+@status / @serverinfo          Tampilkan status server, uptime, dan penggunaan RAM
+Level 2 — Admin / Developer
+@god                           Toggle God Mode (kebal semua damage)
+@heal [nama]                   Pulihkan HP & SP penuh (diri sendiri atau pemain lain)
+@spawn <monster> [jumlah]      Spawn monster di posisi Anda (maks 20)
+@go <mapId>                    Pindah ke map tertentu
+@killall                       Eliminasi semua monster di map
+@item <itemId> [qty]           Tambahkan item ke inventory (maks 99)
+@gold <jumlah>                 Tambahkan/kurangi Gold
+@level [nama] <baseLv> [jobLv] Ubah level karakter (stat point terakumulasi otomatis)
+@statpoint <jumlah> [nama]     Tambah / atur stat point karakter
+@speed <1-3>                   Ubah kecepatan jalan tester/admin
+@clearbag                      Kosongkan tas inventory
+@anomalies [clear]             Cek log anomali anti-cheat server
+@setgm <nama> <0|1|2>          Ubah GM level pemain lain
+
+Monster yang bisa di-spawn: slime, bat, ashura, marin, magmaring, poporing (atau angka 0–5)
+
+Visual In-Game
+Situasi	Tampilan
+Nameplate Admin	[Admin] NamaKarakter warna emas #ffd700
+Nameplate GM	[GM] NamaKarakter warna hijau terang #55ff88
+Pesan sistem GM	» Pesan warna kuning (seperti system biasa)
+Broadcast GM	📢 [PENGUMUMAN] Pesan warna emas di chat semua pemain
+Join GM	Sistem mengumumkan [GM] nama telah masuk ke realm.
+Join Admin	Sistem mengumumkan [Admin] nama telah masuk ke realm.
+Keamanan
+
+WARNING
+
+gmLevel tidak pernah dikirim dari client. Hanya dibaca dari database (token JWT + kolom gm_level di tabel accounts).
+
+CAUTION
+
+@setgm dan @spawn hanya tersedia untuk gmLevel = 2. Semua perintah GM dicatat ke gm_audit_logs di database.
+
+NOTE
+
+God Mode (@god) bersifat sesi saja — reset saat logout/disconnect, tidak tersimpan ke database, aman untuk testing.
+
+Cara Membuat Akun GM (Testing Tanpa DB)
+
+Tanpa PostgreSQL (mode in-memory): Cukup daftar dengan username admin atau gm — server otomatis memberi gmLevel = 2 / gmLevel = 1.
+
+Dengan PostgreSQL:
+
+sql
+-- Naikkan akun ke Admin
+UPDATE accounts SET gm_level = 2 WHERE lower(username) = 'namaakun';
+-- Naikkan akun ke GM
+UPDATE accounts SET gm_level = 1 WHERE lower(username) = 'namaakun';
+
+Atau gunakan perintah in-game: @setgm NamaKarakter 1 (harus login sebagai Admin dulu).

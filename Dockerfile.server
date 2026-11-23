@@ -1,0 +1,16 @@
+# Production image for the authoritative Colyseus server.
+FROM node:24-alpine
+
+WORKDIR /app/server
+ENV NODE_ENV=production
+
+RUN apk add --no-cache git
+
+COPY server/package.json ./
+RUN npm install --omit=dev && npm cache clean --force
+
+COPY server/dist ./dist
+COPY server/migrations ./migrations
+
+EXPOSE 2567
+CMD ["node", "dist/index.js"]
