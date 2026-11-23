@@ -11,19 +11,19 @@ WORKDIR /app/server
 COPY server/package.json server/package-lock.json* ./
 RUN npm install
 COPY server ./
+RUN mkdir -p /app/server/migrations /app/server/maps
 RUN npm run build
 
 FROM node:24-alpine
-WORKDIR /app
+WORKDIR /app/server
 ENV NODE_ENV=production
 
-WORKDIR /app/server
 COPY server/package.json server/package-lock.json* ./
 RUN npm install --omit=dev && npm cache clean --force
 
 COPY --from=server-build /app/server/dist ./dist
-COPY server/maps ./maps
-COPY server/migrations ./migrations
+COPY --from=server-build /app/server/maps ./maps
+COPY --from=server-build /app/server/migrations ./migrations
 COPY --from=client-build /app/client/dist /app/client/dist
 
 EXPOSE 2567
