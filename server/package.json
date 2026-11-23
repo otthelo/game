@@ -1,0 +1,32 @@
+{
+  "name": "server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "predev": "npm run build",
+    "dev": "node --watch dist/index.js",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "db:migrate": "tsx src/database/migrate.ts",
+    "db:editor": "node ../tools/db-editor.mjs",
+    "test:load": "tsx scripts/load-test.ts"
+  },
+  "dependencies": {
+    "@colyseus/schema": "^5.0.49",
+    "colyseus": "^0.18.12",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "pg": "^8.23.1",
+    "redis": "^6.3.1"
+  },
+  "devDependencies": {
+    "@colyseus/sdk": "^0.18.10",
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.10.0",
+    "@types/pg": "^8.23.1",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}
