@@ -1,10 +1,10 @@
 # Production image for the Phaser client, served by nginx together with a
 # same-origin reverse proxy to the Colyseus server.
-FROM node:24-alpine AS build
+FROM node:24-slim AS build
 
 WORKDIR /app/client
 
-RUN apk add --no-cache git
+RUN apt-get update && apt-get install -y --no-install-recommends git && rm -rf /var/lib/apt/lists/*
 
 COPY client/package.json ./
 RUN npm install

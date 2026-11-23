@@ -1,5 +1,5 @@
 # Combined production image for Railway (serves both Phaser client & Colyseus server)
-FROM node:24-alpine AS client-build
+FROM node:24-slim AS client-build
 WORKDIR /app/client
 COPY client/package.json client/package-lock.json* ./
 RUN npm install
